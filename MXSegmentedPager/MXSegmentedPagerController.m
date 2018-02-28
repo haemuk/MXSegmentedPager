@@ -73,7 +73,17 @@
 - (UIView *)segmentedPager:(MXSegmentedPager *)segmentedPager viewForPageAtIndex:(NSInteger)index {
     
     UIViewController *viewController = [self segmentedPager:segmentedPager viewControllerForPageAtIndex:index];
-    return viewController.view;
+    /*
+     *  addChildViewController가 없으면 Segmented된 뷰컨트롤러의 NavigationController이 nil이 나온다.
+     *  그래서 예전 소스에 이걸 추가해준다.
+     */
+    if (viewController) {
+        [self addChildViewController:viewController];
+        [viewController didMoveToParentViewController:self];
+        
+        return viewController.view;
+    }
+    return nil;
 }
 
 - (UIViewController *)segmentedPager:(MXSegmentedPager *)segmentedPager viewControllerForPageAtIndex:(NSInteger)index {
